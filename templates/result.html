@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Interview Cheatsheet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Interview Cheatsheet</h1>
+        
+        <div class="swot-analysis">
+            <h2>SWOT Analysis</h2>
+            <div class="swot-grid">
+                {% for category in ['strengths', 'weaknesses', 'opportunities', 'threats'] %}
+                <div class="swot-box {{ category }}">
+                    <h3>{{ category|title }}</h3>
+                    <ul>
+                        {% if cheatsheet and cheatsheet.swot and cheatsheet.swot.get(category) %}
+                            {% for item in cheatsheet.swot[category] %}
+                                <li>{{ item }}</li>
+                            {% endfor %}
+                        {% else %}
+                            <li>No {{ category }} data available</li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="skills-section">
+            <h2>Skills Matching</h2>
+            <table id="skills-table">
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                        <th>Match</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for skill in cheatsheet.get('skills', []) %}
+                    <tr>
+                        <td>{{ skill.name }}</td>
+                        <td class="{{ 'match' if skill.match else 'no-match' }}">
+                            {{ '✓' if skill.match else '✗' }}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">No skills analysis available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="qa-section">
+            <h2>Interview Questions</h2>
+            {% for qa in cheatsheet.get('questions', []) %}
+            <div class="qa-item">
+                <h3>Q: {{ qa.question }}</h3>
+                <p>A: {{ qa.answer }}</p>
+            </div>
+            {% else %}
+            <p>No questions generated</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Interview Cheatsheet Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <h1>📝 Interview Cheatsheet Generator</h1>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <form action="/" method="POST" enctype="multipart/form-data" id="upload-form">
+        <div class="upload-box" id="uploadBox">
+            <img src="static/images/upload.png" alt="Upload Icon">
+            <p>Upload Resume</p>
+            <div class="pdf-instruction"><p>Only PDF format allowed.</p></div>
+            <iframe id="pdf-preview" class="preview-hidden"></iframe>
+        </div>
+        <input id="file-input" type="file" name="file" accept="application/pdf" required>
+        
+        <textarea id="jobDescription" name="jobDescription" placeholder="Paste job description here..." required></textarea>
+        
+        <button type="submit" class="submit-button">
+            <i class="fas fa-magic"></i> Generate Cheatsheet
+        </button>
+    </form>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
